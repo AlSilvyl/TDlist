@@ -15,13 +15,18 @@
     </style>
 </head>
 
-<body>
+<body class="light-theme">
     <div class="container">
-        <div style='height:45px; background-color: #483C32e1; display: flex;
+        <div style='height:45px; display: flex;
         justify-content: space-between; align-items: center;
         padding: 25px;' class="header">
             <div class="left">
-                <a href="/"> <span style="color:#FFECD1"> Главная страница </span> </a>
+                <a href="/"> Главная страница </a>
+            </div>
+            <div class="right">
+            <div style='justify-content: space-between; align-items: center;' class="d-grid gap-2 d-md-block mx-auto">
+                <button id='themeToggle'>Изменить тему</button>
+            </div>
             </div>
         </div>
 
@@ -33,7 +38,7 @@
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
                         <input type="text" id="name" name="name" class="form-control" required>
-                        <label class="form-label" for="form3Example1c"> <span style="color:#FFECD1"> Имя </span> </label>
+                        <label class="form-label" for="form3Example1c"> Имя </label>
                     </div>
                 </div>
 
@@ -41,7 +46,7 @@
                     <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
                         <input type="email" id="email" name="email" class="form-control" required>
-                        <label class="form-label" for="form3Example3c"> <span style="color:#FFECD1"> Почта </span> </label>
+                        <label class="form-label" for="form3Example3c"> Почта </label>
                     </div>
                 </div>
 
@@ -49,23 +54,23 @@
                     <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
                         <input type="password" id="password" name="password" class="form-control" required>
-                        <label class="form-label" for="form3Example4c"> <span style="color:#FFECD1"> Пароль </span> </label>
+                        <label class="form-label" for="form3Example4c"> Пароль </label>
                     </div>
                 </div>
 
                 <div class="form-check d-flex justify-content-center mb-5">
                     <input class="form-check-input me-2" name="remember" type="checkbox" id="form2Example3c" />
-                    <label class="form-check-label" for="form2Example3"> <span style="color:#FFECD1"> Запомнить </span> </label>
+                    <label class="form-check-label" for="form2Example3"> Запомнить </label>
                 </div>
 
                 <div style='justify-content:space-around;' class="d-flex mx-4 mb-3 mb-lg-4">
 
-                    <input style="background-color: #483C32e1; color:#FFECD1;" type='submit' data-mdb-button-init data-mdb-ripple-init
+                    <input type='submit' data-mdb-button-init data-mdb-ripple-init
                         class="btn btn-lg" value="Регистрация">
                 </div>
                 <div style='justify-content:space-around;' class="d-flex mx-4 mb-3 mb-lg-4">
 
-                    <a href="/login"> <span style="color:#FFECD1"> Войти </span> </a>
+                    <a href="/login"> Войти </a>
                 </div>
 
             </form>
@@ -74,6 +79,49 @@
 </body>
 
 <style>
+    body {
+    font-family: Monotype Corsiva, sans-serif;
+    transition: background-color 0.7s ease;
+}
+
+body.light-theme {
+    background-color: #D8D9D3;
+    color: #000000;
+}
+
+body.dark-theme {
+    background-color: #222629;
+    color: #ffffff;
+}
+
+.header {
+    background-color: #3F9F3C;
+}
+
+.btn {
+    background-color: #1E4328;
+    color: white;
+}
+
+.card {
+    background-color: #2E7925;
+}
+
+body.dark-theme .header {
+    background-color: #317C2D;
+}
+
+body.dark-theme .btn {
+    background-color: #54A065;
+    color: black;
+}
+
+body.dark-theme .card {
+    background-color: #257953;
+}
+
+
+
 </style>
 
 <script>
@@ -95,6 +143,16 @@
             }, false)
         })
     })()
+
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        const currentTheme = document.body.className;
+        if (currentTheme === 'light-theme') {
+        document.body.className = 'dark-theme';
+        } else {
+        document.body.className = 'light-theme';
+        }
+    });
+
 </script>
 
 </html>

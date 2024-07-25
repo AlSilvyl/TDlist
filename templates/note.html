@@ -15,19 +15,19 @@
     </style>
 </head>
 
-<body>
+<body class="light-theme">
     <div class="container">
-        <div style='height:45px; background-color: #483C32e1; display: flex;
+        <div style='height:45px; display: flex;
         justify-content: space-between; align-items: center;
         padding: 25px;' class="header">
             <div class="left">
-                <a href="/"> <span style="color:#FFECD1"> Главная страница </span> </a>
+                <a href="/"> Главная страница </a>
             </div>
             <div style="width: 200px; display: flex; justify-content: space-around;" class="right">
                 {% if flag == False %}
-                <a href="/registration"> <span style="color:#FFECD1"> Регистрация </span> </a>
+                <a href="/registration"> Регистрация </a>
                 {% endif %}
-                <a href="/login"> <span style="color:#FFECD1"> Профиль </span> </a>
+                <a href="/login"> Профиль </a>
             </div>
         </div>
         <br>
@@ -38,17 +38,65 @@
             <li class="list-group-item">Описание: {{desc}}</li>
             <li hidden class="list-group-item">id: {{id}}</li>
             <li hidden class="list-group-item">id: {{user_id}}</li>
-            <br>
-            <h2> <span style="color:#FFECD1"> Информация о пользователе </span> </h2>
-            <br>
-            <li class="list-group-item">Имя: {{result.name}}</li>
-            <li class="list-group-item">Почта: {{result.email}}</li>
         {% endblock %}
     </div>
 </body>
 
+<script>
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        const currentTheme = document.body.className;
+        if (currentTheme === 'light-theme') {
+        document.body.className = 'dark-theme';
+        } else {
+        document.body.className = 'light-theme';
+        }
+    });
+</script>
+
 <style>
-    
+    body {
+    font-family: Monotype Corsiva, sans-serif;
+    transition: background-color 0.7s ease;
+}
+
+body.light-theme {
+    background-color: #D8D9D3;
+    color: #000000;
+}
+
+body.dark-theme {
+    background-color: #222629;
+    color: #ffffff;
+}
+
+.header {
+    background-color: #3F9F3C;
+}
+
+.btn {
+    background-color: #1E4328;
+    color: white;
+}
+
+.card {
+    background-color: #2E7925;
+}
+
+body.dark-theme .header {
+    background-color: #317C2D;
+}
+
+body.dark-theme .btn {
+    background-color: #54A065;
+    color: black;
+}
+
+body.dark-theme .card {
+    background-color: #257953;
+}
+
+
+
 </style>
 
 </html>
