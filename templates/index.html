@@ -17,26 +17,23 @@
 
 <body class="light-theme">
     <div class="container">
-        <div style='height:45px; background-color: #483C32e1; display: flex;
-        justify-content: space-between; align-items: center;
-        padding: 25px;' class="header">
+        <div style='height:45px; display: flex; justify-content: space-between; align-items: center; padding: 25px;' class="header">
             <div class="left">
-                <a href="/"> <span style="color:#FFECD1"> Главная страница </span> </a>
+                <a href="/"> Главная страница </a>
             </div>
             <div style="width: 200px; display: flex; justify-content: space-around;" class="right">
                 {% if flag == False %}
-                <a href="/registration"> <span style="color:#FFECD1"> Регистрация </span> </a>
+                <a href="/registration"> Регистрация </a>
                 {% endif %}
-                <a href="/login"> <span style="color:#FFECD1"> Профиль </span> </a>
+                <a href="/login"> Профиль </a>
             </div>
         </div>
         <br>
         {% if flag == True %}
         {% endif %}
-        <div style="display: flex;
-        justify-content: space-between; align-items: center;" class="">
+        <div style="display: flex; justify-content: space-between; align-items: center;" class="">
             <div style="display: flex; justify-content: space-around;" class="who">
-                <h2> Книги  </h2>
+                <h2> Заметки </h2>
             </div>
             <div class="">
                 <a class="btn" href="/advt"> Добавить заметку </a>
@@ -47,7 +44,7 @@
         <div class="row">
             {% for i in result %}
             <div class="col-3 book-card">
-                <div style="background-color: #483C32;" class="card">
+                <div class="card">
                     <a href="/book_card/{{ i.id }}">
                         <div class="card-body">
                             <ul class="list-group">
@@ -63,9 +60,6 @@
         <br>
     </div>
 </body>
-
-<style>
-</style>
 
 <script>
 
