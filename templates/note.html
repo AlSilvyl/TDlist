@@ -44,6 +44,11 @@
                 {% endif %}
                 <a href="/login"> Профиль </a>
             </div>
+            <div class="right">
+            <div style='justify-content: space-between; align-items: center;' class="d-grid gap-2 d-md-block mx-auto">
+                <button id='themeToggle'>Изменить тему</button>
+            </div>
+            </div>
         </div>
         <br>
         {%block body%}
@@ -56,17 +61,6 @@
         {% endblock %}
     </div>
 </body>
-
-<script>
-    document.getElementById('themeToggle').addEventListener('click', function() {
-        const currentTheme = document.body.className;
-        if (currentTheme === 'light-theme') {
-        document.body.className = 'dark-theme';
-        } else {
-        document.body.className = 'light-theme';
-        }
-    });
-</script>
 
 <style>
     body {

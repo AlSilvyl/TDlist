@@ -38,6 +38,11 @@
             <div class="left">
                 <a href="/"> Главная страница </a>
             </div>
+            <div class="right">
+            <div style='justify-content: space-between; align-items: center;' class="d-grid gap-2 d-md-block mx-auto">
+                <button id='themeToggle'>Изменить тему</button>
+            </div>
+            </div>
         </div>
         <br>
         {%block body%}
@@ -49,44 +54,11 @@
         </ul>
         {% endblock %}
         <br>
-        <h2> Мои заметки: </h2>
-        <br>
-        <div class="row">
-            {% for i in book_result %}
-            <div class="col-3 book-card">
-                <div class="card">
-                    <a href="/book_card/{{ i.id }}">
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item book-title">Название: {{ i.title }}</li>
-                            </ul>
-                        </div>
-                    </a>
-                </div>
-                <br>
-            </div>
-            {% endfor %}
-        </div>
-        <br>
         <div class="d-grid gap-5 col-2 mx-auto">
             <a class="btn" href="{{ url_for('switch_account') }}"> Сменить аккаунт </a>
         </div>
-        <div style='justify-content: space-between; align-items: center; padding: 1px;' class="d-grid gap-5 col-2 mx-auto">
-            <button id='themeToggle'>Изменить тему</button>
-        </div>
     </div>
 </body>
-
-<script>
-    document.getElementById('themeToggle').addEventListener('click', function() {
-        const currentTheme = document.body.className;
-        if (currentTheme === 'light-theme') {
-        document.body.className = 'dark-theme';
-        } else {
-        document.body.className = 'light-theme';
-        }
-    });
-</script>
 
 <style>
     body {
