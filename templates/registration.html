@@ -13,6 +13,21 @@
             color: #ffffff;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.className = savedTheme;
+            }
+
+            document.getElementById('themeToggle').addEventListener('click', function () {
+                const currentTheme = document.body.className;
+                const newTheme = currentTheme === 'light-theme' ? 'dark-theme' : 'light-theme';
+                document.body.className = newTheme;
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+    </script>
 </head>
 
 <body class="light-theme">
