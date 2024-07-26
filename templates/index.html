@@ -88,19 +88,21 @@
             </div>
         </div>
         <br>
-        <div class="row">
+        <div class="row row-equal-height row-cols-1 row-cols-md-2 row-cols-lg-4 g-2">
             {% for i in result %}
-            <div class="col-3 book-card">
+            <div class="col">
                 <div class="card">
-                    <a href="/note/{{ i.id }}">
+                    <div class="">
+                        <a href="/note/{{ i.id }}">
                         <div class="card-body">
                             <ul class="list-group">
                                 <li class="list-group-item book-title">Название: {{ i.title }}</li>
+                                <li class="list-group-item book-title">Описание: {{ i.desc }}</li>
                             </ul>
                         </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
-                <br>
             </div>
             {% endfor %}
         </div>
@@ -135,6 +137,12 @@ body.dark-theme {
 
 .card {
     background-color: #2E7925;
+    min-width: 135px;
+    max-width: 270px;
+}
+
+.list-group {
+    background-color: grey;
 }
 
 body.dark-theme .header {
@@ -148,9 +156,14 @@ body.dark-theme .btn {
 
 body.dark-theme .card {
     background-color: #257953;
+    min-width: 135px;
+    max-width: 270px;
 }
 
+body.dark-theme .card-custom {
+    margin: 8px;
 
+}
 
 </style>
 
