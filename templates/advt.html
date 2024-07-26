@@ -14,21 +14,41 @@
             color: #ffffff;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.className = savedTheme;
+            }
+
+            document.getElementById('themeToggle').addEventListener('click', function () {
+                const currentTheme = document.body.className;
+                const newTheme = currentTheme === 'light-theme' ? 'dark-theme' : 'light-theme';
+                document.body.className = newTheme;
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+    </script>
 </head>
 
-<body>
+<body class="light-theme">
     <div class="container">
-        <div style='height:45px; background-color: #483C32e1; display: flex;
+        <div style='height:45px; display: flex;
         justify-content: space-between; align-items: center;
         padding: 25px;' class="header">
             <div class="left">
-                <a href="/"> <span style="color:#FFECD1"> Главная страница </span> </a>
+                <a href="/"> Главная страница </a>
             </div>
             <div style="width: 200px; display: flex; justify-content: space-around;" class="right">
                 {% if flag == False %}
-                <a href="/registration"> <span style="color:#FFECD1"> Регистрация </span> </a>
+                <a href="/registration"> Регистрация </a>
                 {% endif %}
-                <a href="/login"> <span style="color:#FFECD1"> Профиль </span> </a>
+                <a href="/login"> Профиль </a>
+            </div>
+            <div class="right">
+            <div style='justify-content: space-between; align-items: center;' class="d-grid gap-2 d-md-block mx-auto">
+                <button id='themeToggle'>Изменить тему</button>
+            </div>
             </div>
         </div>
         <br>
@@ -37,28 +57,70 @@
 
             <div class="d-flex flex-row align-items-center mb-4">
                 <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                    <label class="form-label" for="form3Example1c"> Название </label>
                     <input type="text" id="title" name="title" class="form-control" required>
-                    <label class="form-label" for="form3Example1c"> <span style="color:#FFECD1"> Название </span> </label>
                 </div>
             </div>
 
             <br>
             <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label"> <span style="color:#FFECD1"> Описание </span> </label>
+                <label for="exampleFormControlTextarea1" class="form-label"> Описание </label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="3"></textarea>
             </div>
 
             <div style='justify-content:space-around;' class="d-flex mx-4 mb-3 mb-lg-4">
 
-                <input style="background-color: #483C32e1; color:#FFECD1;" type='submit' data-mdb-button-init data-mdb-ripple-init
+                <input type='submit' data-mdb-button-init data-mdb-ripple-init
                     class="btn btn-lg" value="Добавить заметку">
             </div>
-
         </form>
     </div>
 </body>
 
 <style>
+    body {
+    font-family: Garamond, sans-serif;
+    transition: background-color 0.7s ease;
+}
+
+body.light-theme {
+    background-color: #D8D9D3;
+    color: #000000;
+}
+
+body.dark-theme {
+    background-color: #222629;
+    color: #ffffff;
+}
+
+.header {
+    background-color: #3F9F3C;
+}
+
+.btn {
+    background-color: #1E4328;
+    color: white;
+}
+
+.card {
+    background-color: #2E7925;
+}
+
+body.dark-theme .header {
+    background-color: #317C2D;
+}
+
+body.dark-theme .btn {
+    background-color: #54A065;
+    color: black;
+}
+
+body.dark-theme .card {
+    background-color: #257953;
+}
+
+
+
 </style>
 
 </html>

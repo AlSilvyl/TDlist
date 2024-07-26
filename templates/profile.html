@@ -13,59 +13,97 @@
             color: #ffffff;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.className = savedTheme;
+            }
+
+            document.getElementById('themeToggle').addEventListener('click', function () {
+                const currentTheme = document.body.className;
+                const newTheme = currentTheme === 'light-theme' ? 'dark-theme' : 'light-theme';
+                document.body.className = newTheme;
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+    </script>
 </head>
 
-<body>
+<body class="light-theme">
     <div class="container">
-        <div style='height:45px; background-color: #483C32e1; display: flex;
+        <div style='height:45px; display: flex;
         justify-content: space-between; align-items: center;
         padding: 25px;' class="header">
             <div class="left">
-                <a href="/"> <span style="color:#FFECD1"> Главная страница </span> </a>
+                <a href="/"> Главная страница </a>
             </div>
-            <div class="center">
-                <a href="/wishlist"> <span style="color:#FFECD1"> Список желаемого </span> </a>
+            <div class="right">
+            <div style='justify-content: space-between; align-items: center;' class="d-grid gap-2 d-md-block mx-auto">
+                <button id='themeToggle'>Изменить тему</button>
+            </div>
             </div>
         </div>
         <br>
         {%block body%}
-        <ul class="list-group">
-            <li class="list-group-item">id: {{id}}</li>
-            <li class="list-group-item">name: {{name}}</li>
-            <li class="list-group-item">email: {{email}}</li>
-            <li class="list-group-item">password: {{password}}</li>
+        <ul class="elastic">
+            <li class="elastic-item">id: {{id}}</li>
+            <li class="elastic-item">name: {{name}}</li>
+            <li class="elastic-item">email: {{email}}</li>
+            <li class="elastic-item">password: {{password}}</li>
         </ul>
         {% endblock %}
         <br>
-        <h2> <span style="color:#FFECD1"> Мои книги: </span> </h2>
-        <br>
-        <div class="row">
-            {% for i in book_result %}
-            <div class="col-3 book-card">
-                <div class="card">
-                    <a href="/book_card/{{ i.id }}">
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item book-title">Название: {{ i.title }}</li>
-                                <li class="list-group-item book-author">Автор: {{ i.author }}</li>
-                                <li class="list-group-item">Жанр: {{ i.genre }}</li>
-                                <li class="list-group-item wishlist-status"></li>
-                            </ul>
-                        </div>
-                    </a>
-                </div>
-                <br>
-            </div>
-            {% endfor %}
-        </div>
-        <br>
         <div class="d-grid gap-5 col-2 mx-auto">
-            <a style="background-color: #483C32e1;" class="btn" href="{{ url_for('switch_account') }}"> <span style="color:#FFECD1"> Сменить аккаунт </span> </a>
+            <a class="btn" href="{{ url_for('switch_account') }}"> Сменить аккаунт </a>
         </div>
     </div>
 </body>
 
 <style>
+    body {
+    font-family: Garamond, sans-serif;
+    transition: background-color 0.7s ease;
+}
+
+body.light-theme {
+    background-color: #D8D9D3;
+    color: #000000;
+}
+
+body.dark-theme {
+    background-color: #222629;
+    color: #ffffff;
+}
+
+.header {
+    background-color: #3F9F3C;
+}
+
+.btn {
+    background-color: #1E4328;
+    color: white;
+}
+
+.card {
+    background-color: #2E7925;
+}
+
+body.dark-theme .header {
+    background-color: #317C2D;
+}
+
+body.dark-theme .btn {
+    background-color: #54A065;
+    color: black;
+}
+
+body.dark-theme .card {
+    background-color: #257953;
+}
+
+
+
 </style>
 
 </html>
