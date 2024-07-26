@@ -3,5 +3,3 @@ uvicorn
 sqlalchemy
 sqlmodel
 bcrypt
-python-multipart
-aiofiles
