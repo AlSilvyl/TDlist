@@ -194,7 +194,7 @@ async def switch_account(response: Response):
     return response
 
 
-@app.post('/upload-single', tags=['Pages'])
+@app.post('/upload1', tags=['Pages'])
 async def upload_file(upload_file: UploadFile = File(...)):
     path = f'media/{upload_file.name}'
     with open(path,'wb+') as buffer:
@@ -206,7 +206,7 @@ async def upload_file(upload_file: UploadFile = File(...)):
         'type': upload_file.content_type
     }
 
-@app.post('/upload-multiple', tags=['Pages'])
+@app.post('/upload2', tags=['Pages'])
 async def upload_multiple_files(uploaded_files: List[UploadFile] = File(...)):
     res = []
     for uploaded_files in uploaded_files:
