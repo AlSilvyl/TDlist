@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,56 +8,110 @@
     <title>Главная страница</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css">
     <style>
+            body {
+            font-family: Garamond, sans-serif;
+            transition: background-color 0.7s ease;
+        }
+
+        body.light-theme {
+            background-color: #D8D9D3;
+            color: #000000;
+        }
+
+        body.dark-theme {
+            background-color: #222629;
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: #3F9F3C;
+        }
+
+        .btn {
+            background-color: #1E4328;
+            color: white;
+        }
+
+        .card {
+            background-color: #2E7925;
+            min-width: 135px;
+            max-width: 270px;
+        }
+
+        .elastic {
+            background-color: grey;
+        }
+
+        body.dark-theme .header {
+            background-color: #317C2D;
+        }
+
+        body.dark-theme .btn {
+            background-color: #54A065;
+            color: black;
+        }
+
+        body.dark-theme .card {
+            background-color: #257953;
+            min-width: 135px;
+            max-width: 270px;
+        }
+
+        body.dark-theme .card-custom {
+            margin: 8px;
+
+        }
+
+        .specific-style {
+            box-sizing: border-box;
+        }
+
+        .specific-style form {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .specific-style input {
+            width: 100%;
+            height: 35px;
+            padding-left: 10px;
+            border: 2px solid #166C13;
+            border-radius: 5px;
+            outline: none;
+            background: white;
+            color: #404040;
+        }
+
+        .specific-style button {
+            position: absolute;
+            top: 0;
+            right: 0px;
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #166C13;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .specific-style button:before {
+            font-size: 10px;
+            color: #222629;
+        }
+
+        .col.hide {
+            display: none;
+        }
         a {
             text-decoration: none;
             color: #ffffff;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.body.className = savedTheme;
-            }
-
-            document.getElementById('themeToggle').addEventListener('click', function () {
-                const currentTheme = document.body.className;
-                const newTheme = currentTheme === 'light-theme' ? 'dark-theme' : 'light-theme';
-                document.body.className = newTheme;
-                localStorage.setItem('theme', newTheme);
-            });
-
-            const user_id = "{{ user_id }}";
-            const wishlistKey = `wishlist_${user_id}`;
-            let wishlist = localStorage.getItem(wishlistKey);
-            wishlist = wishlist ? JSON.parse(wishlist) : [];
-            const books = document.querySelectorAll('.book-card');
-
-
-            const wishlistContainer = document.querySelector('.wishlist-container');
-            wishlist.filter(book => book.user_id === user_id).forEach(book => {
-                const bookCard = document.createElement('div');
-                bookCard.classList.add('col-3');
-                bookCard.innerHTML = `
-                <a href="/book_card/${book.id}">
-                    <div style="background-color: #483C32;" class="card">
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item">Название: ${book.title}</li>
-                                <li class="list-group-item">Автор: ${book.author}</li>
-                                <li class="list-group-item">Жанр: ${book.genre}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </a>
-                <br>
-                `;
-                wishlistContainer.appendChild(bookCard);
-            });
-        });
-    </script>
 </head>
+
 
 <body class="light-theme">
     <div class="container">
@@ -77,13 +132,8 @@
             </div>
         </div>
         <br>
-        <div class="specific-style">
-            <form>
-                <input type="text" placeholder="Искать здесь...">
-                <button type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
+        <div class="col-lg-12 form-control-group">
+            <input type="text" id="elastic">
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center;" class="">
             <div style="display: flex; justify-content: space-around;" class="who">
@@ -101,9 +151,9 @@
                     <div class="">
                         <a href="/note/{{ i.id }}">
                         <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item book-title">Название: {{ i.title }}</li>
-                                <li class="list-group-item book-title">Описание: {{ i.desc }}</li>
+                            <ul class="elastic">
+                                <label> Название: <li class="elastic-item.head note-title"> {{ i.title }} </li> </label>
+                                <label> Описание: <li class="elastic-item note-title"> {{ i.desc }} </li> </label>
                             </ul>
                         </div>
                         </a>
@@ -115,135 +165,73 @@
         <br>
     </div>
 </body>
+<script>
 
-<style>
-    body {
-    font-family: Garamond, sans-serif;
-    transition: background-color 0.7s ease;
-}
+    function insertMark(string, pos, len) {
+        return string.slice(0, pos) + '<mark>' + string.slice(pos, pos + len) + '</mark>' + string.slice(pos + len);
+    }
 
-body.light-theme {
-    background-color: #D8D9D3;
-    color: #000000;
-}
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.className = savedTheme;
+        }
 
-body.dark-theme {
-    background-color: #222629;
-    color: #ffffff;
-}
+        document.getElementById('themeToggle').addEventListener('click', function () {
+            const currentTheme = document.body.className;
+            const newTheme = currentTheme === 'light-theme' ? 'dark-theme' : 'light-theme';
+            document.body.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+        });
 
-.header {
-    background-color: #3F9F3C;
-}
-
-.btn {
-    background-color: #1E4328;
-    color: white;
-}
-
-.card {
-    background-color: #2E7925;
-    min-width: 135px;
-    max-width: 270px;
-}
-
-.list-group {
-    background-color: grey;
-}
-
-body.dark-theme .header {
-    background-color: #317C2D;
-}
-
-body.dark-theme .btn {
-    background-color: #54A065;
-    color: black;
-}
-
-body.dark-theme .card {
-    background-color: #257953;
-    min-width: 135px;
-    max-width: 270px;
-}
-
-body.dark-theme .card-custom {
-    margin: 8px;
-
-}
-
-.specific-style {
-    box-sizing: border-box;
-}
-
-.specific-style form {
-    position: relative;
-    width: 300px;
-    margin: 0 auto;
-}
-
-.specific-style input {
-    width: 100%;
-    height: 35px;
-    padding-left: 10px;
-    border: 2px solid #166C13;
-    border-radius: 5px;
-    outline: none;
-    background: white;
-    color: #404040;
-}
-
-.specific-style button {
-    position: absolute;
-    top: 0;
-    right: 0px;
-    width: 35px;
-    height: 35px;
-    border: none;
-    background: #166C13;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-}
-
-.specific-style button:before {
-    font-size: 10px;
-    color: #222629;
-}
+        const user_id = "{{ user_id }}";
+        const wishlistKey = `wishlist_${user_id}`;
+        let wishlist = localStorage.getItem(wishlistKey);
+        wishlist = wishlist ? JSON.parse(wishlist) : [];
+        const books = document.querySelectorAll('.book-card');
 
 
-@font-face {
-    font-family: 'FontAwesome';
-    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?v=4.7.0');
-    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?v=4.7.0#iefix') format('embedded-opentype'),
-        url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
-        url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
-        url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),
-        url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+        const wishlistContainer = document.querySelector('.wishlist-container');
+        wishlist.filter(book => book.user_id === user_id).forEach(book => {
+            const bookCard = document.createElement('div');
+            bookCard.classList.add('col-3');
+            bookCard.innerHTML = `
+            <a href="/book_card/${book.id}">
+                <div style="background-color: #483C32;" class="card">
+                    <div class="card-body">
+                        <ul class="elastic">
+                            <li class="elastic-item">Название: ${book.title}</li>
+                            <li class="elastic-item">Автор: ${book.author}</li>
+                            <li class="elastic-item">Жанр: ${book.genre}</li>
+                        </ul>
+                    </div>
+                </div>
+            </a>
+            <br>
+            `;
+            wishlistContainer.appendChild(bookCard);
+        });
+    });
+    document.querySelector('#elastic').oninput = function () {
+        let search = document.querySelector("#elastic")
+        let val = search.value.trim().toLowerCase();
+        let elasticItems = document.querySelectorAll('.col');
+        if (val != '') {
+            elasticItems.forEach(function (elem) {
+                if (elem.querySelector(".elastic-item").innerText.toLowerCase().search(val) == -1) {
+                    elem.classList.add('hide');
+                }
+                else {
+                    elem.classList.remove('hide');
+                }
+            });
+        }
+        else {
+            elasticItems.forEach(function (elem) {
+                elem.classList.remove('hide');
+            });
+        }
+    }
 
-.fa {
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
-    font-size: inherit;
-    line-height: 1;
-    text-align: center;
-    text-transform: none;
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
-    position: relative;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.fa-search:before {
-    content: "\f054";
-    color: #222629;
-}
-
-</style>
-
+</script>
 </html>

@@ -52,12 +52,11 @@
         </div>
         <br>
         {%block body%}
-        <ul class="list-group">
-
-            <li class="list-group-item">Название: {{title}}</li>
-            <li class="list-group-item">Описание: {{desc}}</li>
-            <li hidden class="list-group-item">id: {{id}}</li>
-            <li hidden class="list-group-item">id: {{user_id}}</li>
+        <ul class="elastic">
+            <li class="elastic-item">Название: {{title}}</li>
+            <li class="elastic-item.head">Описание: {{desc}}</li>
+            <li hidden class="elastic-item">id: {{id}}</li>
+            <li hidden class="elastic-item">id: {{user_id}}</li>
         {% endblock %}
     </div>
 </body>

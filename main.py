@@ -17,13 +17,13 @@ session = Session(bind=engine)
 
 @app.get('/', response_model=User, tags=['Pages'])
 async def get_index_page(request: Request):
-    
+
     cookie = request.cookies.get('id')
     flag = False
-    
+
     if cookie != None:
         flag = True
-    
+
     statement = select(advt)
     result = session.exec(statement).all()
 
@@ -39,11 +39,11 @@ async def get_index_page(request: Request):
             'user_id': cookie
         }
     )
-    
+
 
 @app.get('/login', tags=['Pages'])
 async def get_login_page(request: Request):
-    
+
     cookie = request.cookies.get('id')
 
     if cookie != None:
@@ -57,19 +57,19 @@ async def get_registration_page(request: Request):
 
 @app.get('/note/{advt_id}', tags=['Pages'])
 async def get_note_page(request: Request, advt_id: int):
-    
+
     cookie = request.cookies.get('id')
     flag = False
-    
+
     if cookie != None:
         flag = True
-    
+
     advt_statement = select(advt).where(advt.id == advt_id)
     advt_result = session.exec(advt_statement).first()
-    
+
     statement = select(User).where(User.id == advt_result.user_id)
     result = session.exec(statement).first()
-    
+
     return templates.TemplateResponse(
         request=request,
         name='note.html',
@@ -85,13 +85,13 @@ async def get_note_page(request: Request, advt_id: int):
 
 @app.get('/advt', tags=['Pages'])
 async def get_advt_page(request: Request):
-    
+
     cookie = request.cookies.get('id')
     flag = False
-    
+
     if cookie != None:
         flag = True
-    
+
     if cookie == None:
         return RedirectResponse('/login', status_code=302)
 
@@ -104,10 +104,10 @@ async def get_advt_page(request: Request):
 async def create_advt(request: Request,
                       title: str = Form(...),
                       desc: str = Form(...)) -> RedirectResponse:
-    
+
     cookie = request.cookies.get('id')
     new = advt(user_id = cookie, title = title, desc = desc)
-    
+
     session.add(new)
     session.commit()
 
@@ -115,10 +115,10 @@ async def create_advt(request: Request,
 
 @app.get('/profile/{user_id}', response_model=User, tags=['Pages'])
 async def get_profile_user(request: Request, user_id: int):
-    
+
     note_statement = select(advt).where(advt.user_id == user_id)
     note_result = session.exec(note_statement).all()
-    
+
     statement = select(User).where(User.id == user_id)
     result = session.exec(statement).first()
 
@@ -144,7 +144,7 @@ async def create_a_user(name: str = Form(...),
                         email: str = Form(...),
                         password: str = Form(...),
                         remember: Optional[bool] = Form(default=False)) -> RedirectResponse:
-    
+
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 
@@ -170,10 +170,10 @@ async def create_a_user(name: str = Form(...),
 async def get_user(email_login: str = Form(...),
                    password_login: str = Form(...),
                    remember: Optional[bool] = Form(default=False)) -> RedirectResponse:
-    
+
     statement = select(User).where(User.email == email_login)
     result = session.exec(statement).first()
-    
+
     if result and bcrypt.checkpw(password_login.encode('utf-8'), result.password.encode('utf-8')):
         response = RedirectResponse('/profile/' + str(result.id), status_code=302)
         if remember:
