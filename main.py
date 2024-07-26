@@ -1,11 +1,15 @@
-from fastapi import FastAPI, Form, status, HTTPException, Depends, Request, Response
+from fastapi import FastAPI, Form, status, HTTPException, Depends, Request, Response, File, UploadFile
 from fastapi.responses import RedirectResponse
+from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from models import *
 from database import engine
 from sqlmodel import Session, select
 from typing import Annotated
+from typing import List
 import bcrypt
+import shutil
 
 
 app = FastAPI()
@@ -188,3 +192,33 @@ async def switch_account(response: Response):
     response = RedirectResponse('/login', status_code=302)
     response.delete_cookie('id')
     return response
+
+
+@app.post('/upload-single', tags=['Pages'])
+async def upload_file(upload_file: UploadFile = File(...)):
+    path = f'media/{upload_file.name}'
+    with open(path,'wb+') as buffer:
+        shutil.copyfileobj(upload_file.file, buffer)
+    return {
+        'file': upload_file,
+        'filename': upload_file.filename,
+        'path': path,
+        'type': upload_file.content_type
+    }
+
+@app.post('/upload-multiple', tags=['Pages'])
+async def upload_multiple_files(uploaded_files: List[UploadFile] = File(...)):
+    res = []
+    for uploaded_files in uploaded_files:
+        path = f'media/{upload_file.name}'
+        with open(path,'wb+') as buffer:
+            shutil.copyfileobj(upload_file.file, buffer)
+        res.append(upload_file)
+    return res
+
+## Для поиска файла: вбиваешь название файла - файл выводится
+
+@app.get('/download/{file_name}', response_class=FileResponse, tags=['Pages'])
+async def download_file(file_name: str):
+    path = f'media/{file_name}'
+    return path
