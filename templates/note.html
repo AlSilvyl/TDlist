@@ -90,6 +90,11 @@
                 <li hidden class="elastic-item">id: {{user_id}}</li>
         {% endblock %}
         </div>
+        <form id="delete-note">
+            <label>Номер заметки: <input type="text" id="{{advt_id}}"></label>
+            <button type="submit">Удалить заметку</button>
+            <p id="delete-note-error" class="hide">Такого номера заметки нет</p>
+        </form>
     </div>
 </body>
 <script>
@@ -106,5 +111,28 @@
             localStorage.setItem('theme', newTheme);
         });
     });
+
+    const noteform = document.getElementById('delete-note');
+    noteform.addEventListener('submit', createNote);
+
+    const error = document.getElementById('delete-note-error')
+    error.classList.add('hide')
+
+    async function createNote(event){
+        event.preventDefault();
+        const noteint = document.getElementById('advt_id').value
+        await fetch(`http://localhost:8000/note/${{advt_id}}`, {
+            credentials: "same-origin",
+            method: "DELETE",
+            headerrs: {"Content-Type": "application/json"}
+        }).then(function(response){
+            if (response.status != 200)
+                error.classList.remove('hide')
+            else {
+                location.reload()
+            }
+        })
+    }
+
 </script>
 </html>
