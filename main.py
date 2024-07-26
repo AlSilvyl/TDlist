@@ -28,7 +28,7 @@ async def get_index_page(request: Request):
     if cookie != None:
         flag = True
 
-    statement = select(advt)
+    statement = select(Advt)
     result = session.exec(statement).all()
 
     if result == None:
@@ -68,7 +68,7 @@ async def get_note_page(request: Request, advt_id: int):
     if cookie != None:
         flag = True
 
-    advt_statement = select(advt).where(advt.id == advt_id)
+    advt_statement = select(Advt).where(Advt.id == advt_id)
     advt_result = session.exec(advt_statement).first()
 
     statement = select(User).where(User.id == advt_result.user_id)
@@ -110,33 +110,37 @@ async def create_advt(request: Request,
                       desc: str = Form(...)) -> RedirectResponse:
 
     cookie = request.cookies.get('id')
-    new = advt(user_id = cookie, title = title, desc = desc)
+    new = Advt(user_id = cookie, title = title, desc = desc)
 
     session.add(new)
     session.commit()
 
     return RedirectResponse('/note/' + str(new.id), status_code=302)
 
+
 @app.delete('/note/{advt_id}', tags=['Pages'])
 async def delete_advt(request: Request, advt_id: int):
-
     cookie = request.cookies.get('id')
-    flag = False
 
-    if cookie != None:
-        flag = True
+    if not cookie:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No cookie found")
+
+    advt = session.query(Advt).filter_by(id=advt_id, user_id=cookie).first()
+
+    if not advt:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Advertisement not found")
 
     session.delete(advt)
-    session.commit
+    session.commit()
 
-    return RedirectResponse('/note', status_code=200)
+    return RedirectResponse('/', status_code=status.HTTP_200_OK)
     
     
 
 @app.get('/profile/{user_id}', response_model=User, tags=['Pages'])
 async def get_profile_user(request: Request, user_id: int):
 
-    note_statement = select(advt).where(advt.user_id == user_id)
+    note_statement = select(Advt).where(Advt.user_id == user_id)
     note_result = session.exec(note_statement).all()
 
     statement = select(User).where(User.id == user_id)
