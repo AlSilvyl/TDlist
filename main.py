@@ -117,7 +117,6 @@ async def create_advt(request: Request,
 
     return RedirectResponse('/note/' + str(new.id), status_code=302)
 
-
 @app.delete('/note/{advt_id}', tags=['Pages'])
 async def delete_advt(request: Request, advt_id: int):
     cookie = request.cookies.get('id')
