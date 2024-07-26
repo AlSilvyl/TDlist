@@ -40,12 +40,12 @@
         }
 
         .elastic {
-            background-color: white;
+            background-color: #E5E1E1;
             color: #000000;
         }
 
         body.dark-theme .header {
-            background-color: #317C2D;
+            background-color: #3C724B;
         }
 
         body.dark-theme .btn {
@@ -136,10 +136,8 @@
                         <a href="/note/{{ i.id }}">
                         <div class="card-body">
                             <ul class="elastic">
-                                <a> Название: </a>
-                                    <li class="elastic-item.head note-title"> {{ i.title }} </li>
-                                <a> Описание: </a>
-                                    <li class="elastic-item note-title"> {{ i.desc }} </li>
+                                <label> Название: <li class="elastic-item note-title"> {{ i.title }} </li> </label>
+                                <label> Описание: <li class="elastic-item note-title"> {{ i.desc }} </li> </label>
                             </ul>
                         </div>
                         </a>
