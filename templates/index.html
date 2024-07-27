@@ -163,35 +163,8 @@
             document.body.className = newTheme;
             localStorage.setItem('theme', newTheme);
         });
-
-        const user_id = "{{ user_id }}";
-        const wishlistKey = `wishlist_${user_id}`;
-        let wishlist = localStorage.getItem(wishlistKey);
-        wishlist = wishlist ? JSON.parse(wishlist) : [];
-        const books = document.querySelectorAll('.book-card');
-
-
-        const wishlistContainer = document.querySelector('.wishlist-container');
-        wishlist.filter(book => book.user_id === user_id).forEach(book => {
-            const bookCard = document.createElement('div');
-            bookCard.classList.add('col-3');
-            bookCard.innerHTML = `
-            <a href="/book_card/${book.id}">
-                <div style="background-color: #483C32;" class="card">
-                    <div class="card-body">
-                        <ul class="elastic">
-                            <li class="elastic-item">Название: ${book.title}</li>
-                            <li class="elastic-item">Автор: ${book.author}</li>
-                            <li class="elastic-item">Жанр: ${book.genre}</li>
-                        </ul>
-                    </div>
-                </div>
-            </a>
-            <br>
-            `;
-            wishlistContainer.appendChild(bookCard);
-        });
     });
+
     document.querySelector('#elastic').oninput = function () {
         let search = document.querySelector("#elastic")
         let val = search.value.trim().toLowerCase();

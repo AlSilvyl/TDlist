@@ -50,6 +50,7 @@
         }
 
         .elastic {
+            position: relative;
             background-color: #E5E1E1;
             color: #000000;
             border: 2px solid #166C13;
@@ -58,6 +59,18 @@
         a {
             text-decoration: none;
             color: #ffffff;
+        }
+
+        #delete-note-error{
+            color: rgb(179, 29, 29);
+        }
+        #delete-note-error.hide{
+            display: none;
+        }
+        .cross {
+            position: absolute;
+            top: 5px;
+            right: 5px;
         }
     </style>
 </head>
@@ -84,25 +97,36 @@
         {%block body%}
         <div>
             <ul class="elastic">
+                <li id="cross" class="cross">&#10006</li>
                 <li class="elastic-item">Название: {{title}}</li>
                 <li class="elastic-item.head">Описание: {{desc}}</li>
                 <li hidden class="elastic-item">id: {{id}}</li>
                 <li hidden class="elastic-item">id: {{user_id}}</li>
+                <li hidden class="elastic-item" id="NoteIdHere">{{advt_id}}</li>
         {% endblock %}
         </div>
-        <form id="delete-note">
-            <label>Номер заметки: <input type="text" id="{{advt_id}}"></label>
-            <button type="submit">Удалить заметку</button>
-            <p id="delete-note-error" class="hide">Такого номера заметки нет</p>
-        </form>
     </div>
 </body>
 <script>
+    const deleteNote = document.getElementById('cross');
+    const noteId = document.getElementById("NoteIdHere").innerText
+    deleteNote.addEventListener('click', async() => {
+        await fetch(`http://localhost:8000/note/${noteId}`, {
+            credentials: "same-origin",
+            method: "DELETE",
+            headerrs: {"Content-Type": "application/json"}
+        })
+        location.reload()
+     })
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             document.body.className = savedTheme;
         }
+
 
         document.getElementById('themeToggle').addEventListener('click', function () {
             const currentTheme = document.body.className;
@@ -117,7 +141,6 @@
 
     const error = document.getElementById('delete-note-error')
     error.classList.add('hide')
-
     async function createNote(event){
         event.preventDefault();
         const noteint = document.getElementById('advt_id').value
