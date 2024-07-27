@@ -66,11 +66,11 @@
             color: white;
         }
 
-        #delete-note-error{
+        #delete-note-error {
             color: rgb(179, 29, 29);
         }
 
-        #delete-note-error.hide{
+        #delete-note-error.hide {
             display: none;
         }
 
@@ -78,9 +78,8 @@
             position: absolute;
             top: 5px;
             right: 5px;
+            cursor: pointer;
         }
-
-
     </style>
 </head>
 
@@ -103,39 +102,48 @@
             </div>
         </div>
         <br>
-        {%block body%}
+        {% block body %}
         <div>
             <ul class="elastic">
-                <li id="cross" class="cross">&#10006</li>
-                <li class="elastic-item">Название: {{title}}</li>
-                <li class="elastic-item.head">Описание: {{desc}}</li>
-                <li hidden class="elastic-item">id: {{id}}</li>
-                <li hidden class="elastic-item">id: {{user_id}}</li>
-                <li hidden class="elastic-item" id="NoteIdHere">{{advt_id}}</li>
-        {% endblock %}
+                <li id="cross" class="cross">&#10006;</li>
+                <li class="elastic-item">Название: {{ title }}</li>
+                <li class="elastic-item head">Описание: {{ desc }}</li>
+                <li hidden class="elastic-item">id: {{ id }}</li>
+                <li hidden class="elastic-item">id: {{ user_id }}</li>
+                <li hidden class="elastic-item" id="NoteIdHere">{{ advt_id }}</li>
+            </ul>
         </div>
+        {% endblock %}
     </div>
 </body>
+
 <script>
-    const deleteNote = document.getElementById('cross');
-    const noteId = document.getElementById("NoteIdHere").innerText
-    deleteNote.addEventListener('click', async() => {
-        await fetch(`http://localhost:8000/note/${noteId}`, {
-            credentials: "same-origin",
-            method: "DELETE",
-            headerrs: {"Content-Type": "application/json"}
-        })
-        location.reload()
-     })
-
-
-
     document.addEventListener('DOMContentLoaded', function () {
+    const deleteNote = document.getElementById('cross');
+    const noteId = document.getElementById('NoteIdHere').innerText;
+
+    const url = new URL(window.location.href);
+    const id = url.pathname.split('/').pop();
+
+    deleteNote.addEventListener('click', async () => {
+        const response = await fetch(`http://127.0.0.1:8000/note/${id}`, {
+            credentials: 'same-origin',
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (response.ok) {
+            window.location.href = 'http://127.0.0.1:8000/';
+        } else {
+            console.error('Error deleting note');
+        }
+    });
+});
+
+
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             document.body.className = savedTheme;
         }
-
 
         document.getElementById('themeToggle').addEventListener('click', function () {
             const currentTheme = document.body.className;
@@ -143,28 +151,6 @@
             document.body.className = newTheme;
             localStorage.setItem('theme', newTheme);
         });
-    });
-
-    const noteform = document.getElementById('delete-note');
-    noteform.addEventListener('submit', createNote);
-
-    const error = document.getElementById('delete-note-error')
-    error.classList.add('hide')
-    async function createNote(event){
-        event.preventDefault();
-        const noteint = document.getElementById('advt_id').value
-        await fetch(`http://localhost:8000/note/${{advt_id}}`, {
-            credentials: "same-origin",
-            method: "DELETE",
-            headerrs: {"Content-Type": "application/json"}
-        }).then(function(response){
-            if (response.status != 200)
-                error.classList.remove('hide')
-            else {
-                location.reload()
-            }
-        })
-    }
-
 </script>
+
 </html>
